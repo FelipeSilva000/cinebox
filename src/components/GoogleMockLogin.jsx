@@ -1,45 +1,37 @@
 import React, { useState } from 'react';
-import { X, Mail } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const GoogleMockLogin = ({ isOpen, onClose, onSelect }) => {
   const [customEmail, setCustomEmail] = useState('');
-  const [customName, setCustomName] = useState('');
-  const [showCustomForm, setShowCustomForm] = useState(false);
 
   if (!isOpen) return null;
 
-  const mockGoogleAccounts = [
-    {
-      email: 'felipe.silva@gmail.com',
-      name: 'Felipe Silva',
-      picture: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
-    },
-    {
-      email: 'dupla.cinebox@gmail.com',
-      name: 'Amor CineBox',
-      picture: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80'
-    }
-  ];
+  const handleCustomSubmit = (e) => {
+    e.preventDefault();
+    if (!customEmail) return;
+    
+    // Derive name from email (e.g. felipe.silva@gmail.com -> Felipe Silva)
+    const emailParts = customEmail.split('@')[0];
+    const formattedName = emailParts
+      .split(/[._-+]/)
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
+
+    handleSelect({
+      email: customEmail,
+      name: formattedName,
+      picture: `https://api.dicebear.com/7.x/identicon/svg?seed=${emailParts}`
+    });
+  };
 
   const handleSelect = (account) => {
     onSelect(account);
     onClose();
   };
 
-  const handleCustomSubmit = (e) => {
-    e.preventDefault();
-    if (!customEmail || !customName) return;
-    
-    handleSelect({
-      email: customEmail,
-      name: customName,
-      picture: `https://api.dicebear.com/7.x/bottts/svg?seed=${customEmail}`
-    });
-  };
-
   return (
     <div className="modal-overlay">
-      <div className="modal-content google-chooser" style={{ maxWidth: '400px', background: '#ffffff', color: '#1f2937' }}>
+      <div className="modal-content google-chooser" style={{ maxWidth: '380px', background: '#ffffff', color: '#1f2937', padding: '2rem' }}>
         <button onClick={onClose} className="modal-close" style={{ color: '#9ca3af' }}>
           <X size={20} />
         </button>
@@ -53,84 +45,35 @@ const GoogleMockLogin = ({ isOpen, onClose, onSelect }) => {
             <path fill="#34a853" d="M12 24c3.24 0 5.97-1.07 7.96-2.91l-3.61-2.8c-1.1.74-2.5 1.18-4.35 1.18-3.1 0-5.78-2.01-6.72-4.73L1.44 17.66C3.37 21.33 7.35 24 12 24z"/>
           </svg>
           <h2 className="google-title" style={{ color: '#1f2937', marginBottom: '0.25rem' }}>Fazer login com o Google</h2>
-          <p style={{ color: '#4b5563', fontSize: '0.875rem' }}>para continuar no CineBox</p>
+          <p style={{ color: '#4b5563', fontSize: '0.875rem', marginBottom: '1.5rem' }}>para acessar o CineBox</p>
         </div>
 
-        {!showCustomForm ? (
+        <form onSubmit={handleCustomSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <div>
-            <div className="google-account-list">
-              {mockGoogleAccounts.map((account) => (
-                <div 
-                  key={account.email} 
-                  className="google-account-item" 
-                  onClick={() => handleSelect(account)}
-                  style={{ border: '1px solid #e5e7eb', padding: '0.8rem', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '0.5rem 0' }}
-                >
-                  <img src={account.picture} alt={account.name} className="google-avatar" style={{ borderRadius: '50%', width: '36px', height: '36px' }} />
-                  <div style={{ textAlign: 'left' }}>
-                    <div style={{ fontWeight: '600', fontSize: '0.9rem', color: '#1f2937' }}>{account.name}</div>
-                    <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>{account.email}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
+            <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#4b5563', marginBottom: '0.5rem' }}>E-mail ou telefone</label>
+            <input 
+              type="email" 
+              className="form-input" 
+              value={customEmail}
+              onChange={(e) => setCustomEmail(e.target.value)}
+              placeholder="seu-email@gmail.com"
+              required
+              style={{ background: '#f9fafb', border: '1px solid #d1d5db', color: '#1f2937', padding: '0.75rem 1rem', borderRadius: '4px', width: '100%', fontSize: '0.95rem' }}
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
             <button 
-              onClick={() => setShowCustomForm(true)}
-              className="btn"
-              style={{ width: '100%', justifyContent: 'center', background: '#f3f4f6', color: '#374151', border: '1px solid #d1d5db', marginTop: '0.5rem' }}
+              type="submit" 
+              className="btn btn-primary"
+              style={{ color: '#fff', background: '#1a73e8', padding: '0.6rem 1.5rem', borderRadius: '4px', fontSize: '0.9rem', fontWeight: '600' }}
             >
-              <Mail size={16} /> Usar outra conta
+              Próximo
             </button>
           </div>
-        ) : (
-          <form onSubmit={handleCustomSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#4b5563', marginBottom: '0.25rem' }}>Nome Completo</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                value={customName}
-                onChange={(e) => setCustomName(e.target.value)}
-                placeholder="Ex: Felipe Silva"
-                required
-                style={{ background: '#f9fafb', border: '1px solid #d1d5db', color: '#1f2937', padding: '0.6rem 0.8rem' }}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '600', color: '#4b5563', marginBottom: '0.25rem' }}>E-mail do Google</label>
-              <input 
-                type="email" 
-                className="form-input" 
-                value={customEmail}
-                onChange={(e) => setCustomEmail(e.target.value)}
-                placeholder="nome@gmail.com"
-                required
-                style={{ background: '#f9fafb', border: '1px solid #d1d5db', color: '#1f2937', padding: '0.6rem 0.8rem' }}
-              />
-            </div>
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <button 
-                type="button" 
-                onClick={() => setShowCustomForm(false)}
-                className="btn btn-secondary"
-                style={{ flex: 1, color: '#374151', background: '#f3f4f6', borderColor: '#d1d5db' }}
-              >
-                Voltar
-              </button>
-              <button 
-                type="submit" 
-                className="btn btn-primary"
-                style={{ flex: 1, color: '#fff', background: '#4285f4' }}
-              >
-                Fazer Login
-              </button>
-            </div>
-          </form>
-        )}
+        </form>
         
-        <div style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '1.5rem', textAlign: 'left', lineHeight: '1.3' }}>
-          Para simular o Google Sign-In, esta janela permite que você escolha uma conta fictícia pré-carregada ou insira seus próprios dados para simular uma resposta do OAuth do Google de forma segura no ambiente local.
+        <div style={{ fontSize: '0.7rem', color: '#6b7280', marginTop: '2rem', textAlign: 'left', lineHeight: '1.4' }}>
+          Para continuar, o Google compartilhará seu nome, endereço de e-mail, preferência de idioma e foto do perfil com o CineBox. (Simulação segura para fins locais).
         </div>
       </div>
     </div>

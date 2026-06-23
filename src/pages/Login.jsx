@@ -99,7 +99,7 @@ const Login = () => {
                 <input 
                   type="text" 
                   className="form-input" 
-                  placeholder="Nome de usuário (Ex: felipe)"
+                  placeholder="Digite seu usuário"
                   value={loginUsername}
                   onChange={(e) => setLoginUsername(e.target.value)}
                   required
@@ -134,7 +134,7 @@ const Login = () => {
               <input 
                 type="text" 
                 className="form-input" 
-                placeholder="Ex: Felipe Silva"
+                placeholder="Seu nome completo"
                 value={regName}
                 onChange={(e) => setRegName(e.target.value)}
                 required
@@ -146,7 +146,7 @@ const Login = () => {
               <input 
                 type="text" 
                 className="form-input" 
-                placeholder="nome_usuario (Ex: felipe)"
+                placeholder="Escolha seu nome de usuário"
                 value={regUsername}
                 onChange={(e) => setRegUsername(e.target.value)}
                 required

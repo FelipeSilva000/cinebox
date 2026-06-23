@@ -96,7 +96,7 @@ const Profile = ({ onReviewMovie }) => {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {userReviews.map((review) => (
-                <div key={review.id} className="glass-panel" style={{ display: 'flex', gap: '1.25rem', padding: '1rem', position: 'relative', border: '1px solid var(--border-light)' }}>
+                <div key={review.id} className="glass-panel review-log-card" style={{ position: 'relative', border: '1px solid var(--border-light)' }}>
                   <img
                     src={review.poster}
                     alt={review.title}

@@ -109,11 +109,8 @@ const Watched = ({ onReviewMovie }) => {
             return (
               <div 
                 key={review.id} 
-                className="glass-panel" 
+                className="glass-panel review-log-card" 
                 style={{ 
-                  display: 'flex', 
-                  gap: '1.5rem', 
-                  padding: '1.5rem', 
                   textAlign: 'left', 
                   position: 'relative',
                   border: '1px solid var(--border-light)',

@@ -11,13 +11,7 @@ export const AppProvider = ({ children }) => {
 
   const [users, setUsers] = useState(() => {
     const savedUsers = localStorage.getItem('cinebox_registered_users');
-    if (savedUsers) return JSON.parse(savedUsers);
-    
-    // Default mock users for a couple
-    return [
-      { username: 'felipe', password: '123', name: 'Felipe', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80', isGoogle: false },
-      { username: 'dupla', password: '123', name: 'Amor', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80', isGoogle: false }
-    ];
+    return savedUsers ? JSON.parse(savedUsers) : [];
   });
 
   // App Data states

@@ -940,3 +940,209 @@ body {
   font-size: 0.75rem;
   color: var(--text-muted);
 }
+
+/* Mobile Responsive Overrides */
+@media (max-width: 768px) {
+  /* Bottom navigation bar transformation */
+  .sidebar {
+    width: 100% !important;
+    height: 65px !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    background-color: var(--bg-secondary) !important;
+    border-right: none !important;
+    border-top: 1px solid var(--border-light) !important;
+    flex-direction: row !important;
+    padding: 0 0.5rem !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    z-index: 1000 !important;
+    margin-top: 0 !important;
+  }
+
+  .sidebar-logo {
+    display: none !important;
+  }
+
+  .sidebar-menu {
+    flex-direction: row !important;
+    width: 100% !important;
+    justify-content: space-around !important;
+    gap: 0 !important;
+  }
+
+  .sidebar-item {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    padding: 4px 6px !important;
+    font-size: 0.65rem !important;
+    border-radius: 6px !important;
+    border: none !important;
+    color: var(--text-muted) !important;
+    background: transparent !important;
+    flex: 1 !important;
+  }
+
+  .sidebar-item span {
+    font-size: 0.6rem !important;
+    font-weight: 600 !important;
+  }
+
+  .sidebar-item.active {
+    border-left: none !important;
+    border-top: 2px solid var(--accent-neon-green) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    color: var(--accent-neon-green) !important;
+  }
+
+  /* Hide bottom profile & logout inside mobile sidebar */
+  .sidebar > div:last-child {
+    display: none !important;
+  }
+
+  /* Main content mobile padding */
+  .main-content {
+    margin-left: 0 !important;
+    padding-bottom: 85px !important; /* spacing for bottom bar */
+  }
+
+  /* Header mobile styling */
+  .header {
+    padding: 0 1rem !important;
+    height: 65px !important;
+    gap: 0.75rem !important;
+  }
+
+  .search-container {
+    width: 100% !important;
+    flex: 1 !important;
+  }
+
+  .search-container:focus-within {
+    width: 100% !important;
+  }
+
+  .header-project-title {
+    display: none !important;
+  }
+
+  .header-mobile-profile {
+    display: flex !important;
+  }
+
+  /* Hero Banner responsiveness */
+  .hero-banner {
+    height: 320px !important;
+    margin: 1rem !important;
+  }
+
+  .hero-content {
+    padding: 1.5rem !important;
+  }
+
+  .hero-title {
+    font-size: 1.6rem !important;
+  }
+
+  .hero-overview {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1rem !important;
+    -webkit-line-clamp: 2 !important;
+  }
+
+  .hero-meta {
+    font-size: 0.8rem !important;
+    margin-bottom: 1rem !important;
+    gap: 1rem !important;
+  }
+
+  /* Category carousel responsiveness */
+  .category-section {
+    margin: 1.5rem 1rem !important;
+  }
+
+  .category-title {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .carousel-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .carousel-btn.left {
+    left: -10px !important;
+  }
+
+  .carousel-btn.right {
+    right: -10px !important;
+  }
+
+  /* Movie grid responsiveness (2 items per row on narrow screens) */
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+    gap: 1rem !important;
+    padding: 0 1rem !important;
+  }
+
+  /* Watched and Profile lists responsiveness */
+  .review-log-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+    margin: 1rem !important;
+  }
+
+  .review-log-card img {
+    width: 80px !important;
+    height: 120px !important;
+  }
+
+  .review-log-card div {
+    width: 100% !important;
+  }
+
+  .review-header {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .filters-bar {
+    margin: 1rem !important;
+    padding: 0.75rem !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .profile-header {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1rem !important;
+    margin: 1rem !important;
+    padding: 1.25rem !important;
+  }
+
+  .profile-header div {
+    text-align: center !important;
+  }
+
+  .profile-stats {
+    justify-content: center !important;
+    gap: 1.25rem !important;
+  }
+
+  .profile-header + div {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    padding: 0 1rem !important;
+  }
+}

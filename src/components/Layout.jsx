@@ -218,11 +218,28 @@ const Layout = ({ children, currentPage, setCurrentPage, onReviewMovie }) => {
             )}
           </div>
 
-          {/* Quick Info / Partner profile selector */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+          {/* Header Actions (Responsive) */}
+          <div className="header-actions">
+            <span className="header-project-title" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
               ProjetoBox • Diário de Filmes
             </span>
+            {user && (
+              <div className="header-mobile-profile" style={{ alignItems: 'center', gap: '0.75rem' }}>
+                <img 
+                  src={user.avatar} 
+                  alt={user.name} 
+                  className={`avatar ${user.isGoogle ? 'google' : ''}`}
+                  style={{ width: '32px', height: '32px', margin: 0 }}
+                />
+                <button 
+                  onClick={logout} 
+                  style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0 }}
+                  title="Sair"
+                >
+                  <LogOut size={18} />
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
