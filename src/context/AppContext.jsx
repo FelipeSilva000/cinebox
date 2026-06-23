@@ -32,7 +32,7 @@ export const AppProvider = ({ children }) => {
   });
 
   const [tmdbKey, setTmdbKey] = useState(() => {
-    return localStorage.getItem('cinebox_tmdb_key') || '';
+    return localStorage.getItem('cinebox_tmdb_key') || import.meta.env.VITE_TMDB_API_KEY || '';
   });
 
   // Sync to localStorage
