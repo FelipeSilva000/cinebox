@@ -2,31 +2,47 @@ import React, { createContext, useState, useEffect } from 'react';
 
 export const AppContext = createContext();
 
+const safeParseArray = (item, fallback = []) => {
+  try {
+    if (!item || item === 'undefined' || item === 'null') return fallback;
+    const parsed = JSON.parse(item);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch (e) {
+    return fallback;
+  }
+};
+
 export const AppProvider = ({ children }) => {
   // Authentication states
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('cinebox_current_user');
-    return savedUser ? JSON.parse(savedUser) : null;
+    try {
+      const savedUser = localStorage.getItem('cinebox_current_user');
+      if (!savedUser || savedUser === 'undefined' || savedUser === 'null') return null;
+      return JSON.parse(savedUser);
+    } catch (e) {
+      return null;
+    }
   });
 
   const [users, setUsers] = useState(() => {
-    const savedUsers = localStorage.getItem('cinebox_registered_users');
-    return savedUsers ? JSON.parse(savedUsers) : [];
+    return safeParseArray(localStorage.getItem('cinebox_registered_users'));
   });
 
   // App Data states
   const [reviews, setReviews] = useState(() => {
-    const savedReviews = localStorage.getItem('cinebox_reviews');
-    return savedReviews ? JSON.parse(savedReviews) : [];
+    return safeParseArray(localStorage.getItem('cinebox_reviews'));
   });
 
   const [watchlist, setWatchlist] = useState(() => {
-    const savedWatchlist = localStorage.getItem('cinebox_watchlist');
-    return savedWatchlist ? JSON.parse(savedWatchlist) : [];
+    return safeParseArray(localStorage.getItem('cinebox_watchlist'));
   });
 
   const [tmdbKey, setTmdbKey] = useState(() => {
-    return localStorage.getItem('cinebox_tmdb_key') || import.meta.env.VITE_TMDB_API_KEY || '';
+    try {
+      return localStorage.getItem('cinebox_tmdb_key') || import.meta.env.VITE_TMDB_API_KEY || '';
+    } catch (e) {
+      return import.meta.env.VITE_TMDB_API_KEY || '';
+    }
   });
 
   // Sync to localStorage
