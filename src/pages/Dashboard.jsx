@@ -13,6 +13,9 @@ const Dashboard = ({ onReviewMovie }) => {
   const [suspenseMovies, setSuspenseMovies] = useState([]);
   const [dramaMovies, setDramaMovies] = useState([]);
   const [scifiMovies, setScifiMovies] = useState([]);
+  const [comedyMovies, setComedyMovies] = useState([]);
+  const [horrorMovies, setHorrorMovies] = useState([]);
+  const [romanceMovies, setRomanceMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('recomended'); // 'recomended' | 'movies' | 'series' | 'infantil'
 
@@ -20,12 +23,15 @@ const Dashboard = ({ onReviewMovie }) => {
     const loadDashboardData = async () => {
       setLoading(true);
       try {
-        const [highs, action, suspense, drama, scifi] = await Promise.all([
+        const [highs, action, suspense, drama, scifi, comedy, horror, romance] = await Promise.all([
           fetchHighlights(tmdbKey),
           fetchMoviesByCategory('action', tmdbKey),
           fetchMoviesByCategory('suspense', tmdbKey),
           fetchMoviesByCategory('drama', tmdbKey),
-          fetchMoviesByCategory('scifi', tmdbKey)
+          fetchMoviesByCategory('scifi', tmdbKey),
+          fetchMoviesByCategory('comedy', tmdbKey),
+          fetchMoviesByCategory('horror', tmdbKey),
+          fetchMoviesByCategory('romance', tmdbKey)
         ]);
 
         setHighlights(highs);
@@ -33,6 +39,9 @@ const Dashboard = ({ onReviewMovie }) => {
         setSuspenseMovies(suspense);
         setDramaMovies(drama);
         setScifiMovies(scifi);
+        setComedyMovies(comedy);
+        setHorrorMovies(horror);
+        setRomanceMovies(romance);
       } catch (error) {
         console.error("Erro ao carregar dados do painel:", error);
       } finally {
@@ -358,6 +367,39 @@ const Dashboard = ({ onReviewMovie }) => {
             <ChevronRight size={22} className="category-chevron" />
           </div>
           <MovieCarousel movies={infantilMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
+
+      {/* 6. Comédia Gargalhada (Shown in Recomendações & Filmes) */}
+      {(activeTab === 'recomended' || activeTab === 'movies') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Comédia Gargalhada</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={comedyMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
+
+      {/* 7. Terror Assustador (Shown in Recomendações & Filmes) */}
+      {(activeTab === 'recomended' || activeTab === 'movies') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Terror Assustador</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={horrorMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
+
+      {/* 8. Romance Apaixonante (Shown in Recomendações & Filmes) */}
+      {(activeTab === 'recomended' || activeTab === 'movies') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Romance Apaixonante</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={romanceMovies} onReviewClick={onReviewMovie} />
         </section>
       )}
 

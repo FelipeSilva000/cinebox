@@ -1214,23 +1214,24 @@ body {
     margin: 1.5rem 0 !important; /* No horizontal margin to allow edge-to-edge sliding */
   }
 
-  /* Limite de 4 itens no display (W_item = 25% - 0.6rem, gap = 0.8rem) */
+  /* Limite de 4 itens no display usando vw (W_item = (100vw - 32px - 24px) / 4.15) */
   .movie-card-container {
-    width: calc(25% - 0.6rem) !important;
-    min-width: calc(25% - 0.6rem) !important;
-    gap: 0.25rem !important;
+    width: calc((100vw - 32px - 24px) / 4.15) !important;
+    min-width: calc((100vw - 32px - 24px) / 4.15) !important;
+    gap: 0.15rem !important;
   }
 
   .movie-card-title-under {
-    font-size: 0.7rem !important;
+    font-size: 0.65rem !important;
+    margin-top: 2px !important;
   }
 
   .movie-card-meta-under {
-    font-size: 0.6rem !important;
+    font-size: 0.55rem !important;
   }
 
   .carousel-track {
-    gap: 0.8rem !important;
+    gap: 8px !important;
     padding: 0.25rem 16px !important; /* Left & right padding inside track to align but slide edge-to-edge */
     display: flex !important;
     overflow-x: auto !important;

@@ -110,6 +110,21 @@ const MOCK_CATEGORIES = {
     { id: 'mock-sf13', title: 'Jurassic Park: O Parque dos Dinossauros', release_date: '1993', poster_path: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=500&q=80', vote_average: 8.2, type: 'movie' },
     { id: 'mock-sf14', title: 'Alien, o Oitavo Passageiro', release_date: '1979', poster_path: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=500&q=80', vote_average: 8.5, type: 'movie' },
     { id: 'mock-sf15', title: '2001: Uma Odisséia no Espaço', release_date: '1968', poster_path: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=500&q=80', vote_average: 8.3, type: 'movie' }
+  ],
+  comedy: [
+    { id: 'mock-c1', title: 'Deadpool & Wolverine', release_date: '2024', poster_path: 'https://images.unsplash.com/photo-1534802046520-4f27db7f3ae5?auto=format&fit=crop&w=500&q=80', vote_average: 8.4, type: 'movie' },
+    { id: 'mock-c2', title: 'Meu Malvado Favorito 4', release_date: '2024', poster_path: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=500&q=80', vote_average: 7.9, type: 'movie' },
+    { id: 'mock-c3', title: 'Se Beber, Não Case!', release_date: '2009', poster_path: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=500&q=80', vote_average: 7.7, type: 'movie' }
+  ],
+  horror: [
+    { id: 'mock-h1', title: 'Nosferatu', release_date: '2024', poster_path: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=500&q=80', vote_average: 8.2, type: 'movie' },
+    { id: 'mock-h2', title: 'Um Lugar Silencioso: Dia Um', release_date: '2024', poster_path: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=500&q=80', vote_average: 7.4, type: 'movie' },
+    { id: 'mock-h3', title: 'Invocação do Mal', release_date: '2013', poster_path: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=500&q=80', vote_average: 7.5, type: 'movie' }
+  ],
+  romance: [
+    { id: 'mock-r1', title: 'Vidas Passadas', release_date: '2023', poster_path: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=500&q=80', vote_average: 8.0, type: 'movie' },
+    { id: 'mock-r2', title: 'Como Eu Era Antes de Você', release_date: '2016', poster_path: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=500&q=80', vote_average: 7.4, type: 'movie' },
+    { id: 'mock-r3', title: 'Questão de Tempo', release_date: '2013', poster_path: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=500&q=80', vote_average: 7.8, type: 'movie' }
   ]
 };
 
@@ -170,7 +185,10 @@ export const fetchMoviesByCategory = async (categoryKey, apiKey) => {
     action: 28,
     suspense: 53, // Thriller
     drama: 18,
-    scifi: 878
+    scifi: 878,
+    comedy: 35,
+    horror: 27,
+    romance: 10749
   };
 
   const genreId = GENRES[categoryKey];
