@@ -13,7 +13,7 @@ const GoogleMockLogin = ({ isOpen, onClose, onSelect }) => {
     // Derive name from email (e.g. felipe.silva@gmail.com -> Felipe Silva)
     const emailParts = customEmail.split('@')[0];
     const formattedName = emailParts
-      .split(/[._-+]/)
+      .split(/[._\-+]/)
       .map(part => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
 
