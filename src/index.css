@@ -1068,15 +1068,30 @@ body {
 
 /* Mobile Responsive Overrides */
 @media (max-width: 1024px) {
-  /* Bottom navigation bar transformation */
+  /* App Container Layout on Mobile (Max-width 480px centered) */
+  .app-container {
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    position: relative !important;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8) !important;
+    background-color: var(--bg-primary) !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Bottom navigation bar transformation (Max-width 480px centered) */
   .sidebar {
     width: 100% !important;
+    max-width: 480px !important;
     height: 65px !important;
     position: fixed !important;
     bottom: 0 !important;
     top: auto !important;
-    left: 0 !important;
-    right: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
     background-color: var(--bg-secondary) !important;
     border-right: none !important;
     border-top: 1px solid var(--border-light) !important;
@@ -1136,17 +1151,25 @@ body {
     display: none !important;
   }
 
-  /* Main content mobile padding */
+  /* Main content mobile padding & layout constraints */
   .main-content {
     margin-left: 0 !important;
     padding-bottom: 85px !important; /* spacing for bottom bar */
+    max-width: 480px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
   }
 
-  /* Header mobile styling */
+  /* Header mobile styling (Max-width 480px centered) */
   .header {
     padding: 0 1rem !important;
     height: 65px !important;
     gap: 0.75rem !important;
+    max-width: 480px !important;
+    width: 100% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
   }
 
   .search-container {
@@ -1220,6 +1243,15 @@ body {
     min-width: calc((100vw - 50px) / 4) !important;
     max-width: 110px !important; /* Impede que os pôsteres fiquem gigantes em tablets ou telas maiores */
     gap: 0.15rem !important;
+  }
+
+  /* Se a tela for maior que 480px (mas abaixo de 1024px no layout mobile), o container do app fica travado em 480px,
+     então calculamos o tamanho das cartas com base na largura máxima de 480px. */
+  @media (min-width: 481px) {
+    .movie-card-container {
+      width: calc((480px - 50px) / 4) !important;
+      min-width: calc((480px - 50px) / 4) !important;
+    }
   }
 
   .movie-card-title-under {

@@ -117,7 +117,7 @@ const Layout = ({ children, currentPage, setCurrentPage, onReviewMovie }) => {
                   onClick={() => setCurrentPage(item.id)}
                 >
                   <Icon 
-                    size={20} 
+                    size={isMobile ? 24 : 20} 
                     fill={isActive ? 'currentColor' : 'none'} 
                     strokeWidth={isActive ? 2.5 : 2}
                   />
