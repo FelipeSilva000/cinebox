@@ -89,7 +89,7 @@ body {
   transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .main-content {
     margin-left: 0;
     padding-top: var(--header-height);
@@ -1067,7 +1067,7 @@ body {
 }
 
 /* Mobile Responsive Overrides */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Bottom navigation bar transformation */
   .sidebar {
     width: 100% !important;
@@ -1214,10 +1214,11 @@ body {
     margin: 1.5rem 0 !important; /* No horizontal margin to allow edge-to-edge sliding */
   }
 
-  /* Limite de 4 itens no display usando vw (W_item = (100vw - 50px) / 4) */
+  /* Limite de 4 itens no display usando vw (W_item = (100vw - 50px) / 4) com limite max-width de 110px */
   .movie-card-container {
     width: calc((100vw - 50px) / 4) !important;
     min-width: calc((100vw - 50px) / 4) !important;
+    max-width: 110px !important; /* Impede que os pôsteres fiquem gigantes em tablets ou telas maiores */
     gap: 0.15rem !important;
   }
 
