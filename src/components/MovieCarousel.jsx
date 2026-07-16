@@ -4,15 +4,35 @@ import MovieCard from './MovieCard';
 
 const MovieCarousel = ({ movies, onReviewClick }) => {
   const trackRef = useRef(null);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftStart = useRef(0);
 
   const scroll = (direction) => {
     if (trackRef.current) {
-      const scrollAmount = 600;
+      const scrollAmount = trackRef.current.clientWidth * 0.75;
       trackRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
     }
+  };
+
+  const handleTouchStart = (e) => {
+    isDown.current = true;
+    startX.current = e.touches[0].pageX - trackRef.current.offsetLeft;
+    scrollLeftStart.current = trackRef.current.scrollLeft;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDown.current) return;
+    const x = e.touches[0].pageX - trackRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5; // Ajuste de sensibilidade do swipe
+    trackRef.current.scrollLeft = scrollLeftStart.current - walk;
+  };
+
+  const handleTouchEnd = () => {
+    isDown.current = false;
   };
 
   if (!movies || movies.length === 0) {
@@ -35,7 +55,13 @@ const MovieCarousel = ({ movies, onReviewClick }) => {
       </button>
 
       {/* Movie Row Track */}
-      <div className="carousel-track" ref={trackRef}>
+      <div 
+        className="carousel-track" 
+        ref={trackRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {movies.map((movie) => (
           <MovieCard 
             key={movie.id} 
