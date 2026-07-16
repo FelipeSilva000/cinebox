@@ -1214,10 +1214,10 @@ body {
     margin: 1.5rem 0 !important; /* No horizontal margin to allow edge-to-edge sliding */
   }
 
-  /* Limite de 4 itens no display usando vw (W_item = (100vw - 32px - 24px) / 4.15) */
+  /* Limite de 4 itens no display usando vw (W_item = (100vw - 50px) / 4) */
   .movie-card-container {
-    width: calc((100vw - 32px - 24px) / 4.15) !important;
-    min-width: calc((100vw - 32px - 24px) / 4.15) !important;
+    width: calc((100vw - 50px) / 4) !important;
+    min-width: calc((100vw - 50px) / 4) !important;
     gap: 0.15rem !important;
   }
 
@@ -1231,8 +1231,8 @@ body {
   }
 
   .carousel-track {
-    gap: 8px !important;
-    padding: 0.25rem 16px !important; /* Left & right padding inside track to align but slide edge-to-edge */
+    gap: 6px !important;
+    padding: 0.25rem 0 !important; /* Sem padding interno, alinhando com o padding da página */
     display: flex !important;
     overflow-x: auto !important;
   }
@@ -1256,11 +1256,11 @@ body {
     padding: 0.5rem 12px !important;
   }
 
-  /* Movie grid responsiveness (2 items per row on narrow screens) */
+  /* Movie grid responsiveness (exatamente 4 itens por linha no grid da página) */
   .movie-grid {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
-    gap: 1rem !important;
-    padding: 0 1rem !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    padding: 0 !important;
   }
 
   /* Watched and Profile lists responsiveness */
