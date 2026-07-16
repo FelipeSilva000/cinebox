@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { Heart, Bookmark, Edit, BookmarkCheck } from 'lucide-react';
+import { Heart, Bookmark, BookmarkCheck } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
-const MovieCard = ({ movie, onReviewClick }) => {
+const MovieCard = ({ movie, onReviewClick, progress, episodeInfo }) => {
   const { user, reviews, watchlist, toggleFavorite, addToWatchlist, removeFromWatchlist } = useContext(AppContext);
 
   const movieId = movie.id;
@@ -47,7 +47,7 @@ const MovieCard = ({ movie, onReviewClick }) => {
           loading="lazy"
         />
         
-        {/* Quick Action Badges (top right/left of card) */}
+        {/* Quick Action Badges (top right of card) */}
         <div style={{
           position: 'absolute',
           top: '8px',
@@ -91,7 +91,7 @@ const MovieCard = ({ movie, onReviewClick }) => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: inWatchlist ? 'var(--accent-neon-orange)' : '#fff',
+                  color: inWatchlist ? 'var(--accent-orange)' : '#fff',
                   cursor: 'pointer',
                   transition: 'all 0.2s'
                 }}
@@ -107,17 +107,55 @@ const MovieCard = ({ movie, onReviewClick }) => {
           )}
         </div>
 
+        {/* Episode/Season Overlay Info */}
+        {episodeInfo && (
+          <div style={{
+            position: 'absolute',
+            bottom: progress !== undefined ? '10px' : '6px',
+            left: '6px',
+            background: 'rgba(0, 0, 0, 0.75)',
+            color: '#fff',
+            padding: '2px 6px',
+            borderRadius: '4px',
+            fontSize: '0.65rem',
+            fontWeight: '600',
+            zIndex: 4
+          }}>
+            {episodeInfo}
+          </div>
+        )}
+
+        {/* Progress Bar Overlay */}
+        {progress !== undefined && (
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '4px',
+            background: 'rgba(255, 255, 255, 0.2)',
+            zIndex: 4
+          }}>
+            <div style={{
+              width: `${progress}%`,
+              height: '100%',
+              background: 'var(--accent-orange)'
+            }} />
+          </div>
+        )}
+
         {/* Hover Info Overlay */}
         <div className="movie-card-info">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifycontent: 'center', height: '100%', width: '100%' }}>
             <span style={{
-              background: 'var(--accent-neon-green)',
-              color: 'var(--bg-primary)',
+              background: 'var(--accent-orange)',
+              color: '#000',
               borderRadius: '4px',
               padding: '4px 10px',
               fontSize: '0.75rem',
               fontWeight: '700',
-              boxShadow: '0 2px 8px rgba(0, 224, 84, 0.4)'
+              boxShadow: '0 2px 8px rgba(255, 159, 28, 0.4)',
+              margin: 'auto'
             }}>
               {isReviewed ? 'Editar' : 'Avaliar'}
             </span>

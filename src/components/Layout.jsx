@@ -9,7 +9,9 @@ import {
   LogOut, 
   Search, 
   Plus,
-  Compass
+  Compass,
+  ChevronLeft,
+  X
 } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import { searchCatalog } from '../services/tmdb';
@@ -20,8 +22,19 @@ const Layout = ({ children, currentPage, setCurrentPage, onReviewMovie }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 768 : false);
   
   const searchRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Debounced search effect
   useEffect(() => {
@@ -96,13 +109,18 @@ const Layout = ({ children, currentPage, setCurrentPage, onReviewMovie }) => {
           <nav className="sidebar-menu">
             {menuItems.map((item) => {
               const Icon = item.icon;
+              const isActive = currentPage === item.id;
               return (
                 <div
                   key={item.id}
-                  className={`sidebar-item ${currentPage === item.id ? 'active' : ''}`}
+                  className={`sidebar-item ${isActive ? 'active' : ''}`}
                   onClick={() => setCurrentPage(item.id)}
                 >
-                  <Icon size={20} />
+                  <Icon 
+                    size={20} 
+                    fill={isActive ? 'currentColor' : 'none'} 
+                    strokeWidth={isActive ? 2.5 : 2}
+                  />
                   <span>{item.label}</span>
                 </div>
               );
@@ -145,102 +163,214 @@ const Layout = ({ children, currentPage, setCurrentPage, onReviewMovie }) => {
       <div className="main-content">
         {/* Top Header */}
         <header className="header">
-          {/* Search Input and Live Dropdown */}
-          <div className="search-container" ref={searchRef} style={{ position: 'relative' }}>
-            <Search size={18} style={{ color: 'var(--text-muted)' }} />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Buscar filmes ou séries..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => searchQuery.trim().length > 1 && setShowResults(true)}
-            />
+          {isMobile ? (
+            isSearchActive ? (
+              <div className="search-container active" ref={searchRef} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem', position: 'relative', background: 'var(--bg-secondary)', borderRadius: '15px', padding: '0.35rem 0.75rem' }}>
+                <button 
+                  onClick={() => { setIsSearchActive(false); setSearchQuery(''); }}
+                  style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0 }}
+                >
+                  <ChevronLeft size={22} />
+                </button>
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Buscar filmes ou séries..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => searchQuery.trim().length > 1 && setShowResults(true)}
+                  autoFocus
+                  style={{ flex: 1, border: 'none', background: 'transparent', color: '#fff', outline: 'none', fontSize: '0.85rem' }}
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0 }}
+                  >
+                    <X size={18} />
+                  </button>
+                )}
 
-            {showResults && (
-              <div className="search-results-overlay">
-                {isSearching ? (
-                  <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                    Buscando no catálogo...
-                  </div>
-                ) : searchResults.length > 0 ? (
-                  <>
-                    {searchResults.map((movie) => (
-                      <div
-                        key={movie.id}
-                        className="search-result-item"
-                        onClick={() => handleResultClick(movie)}
-                      >
-                        <img
-                          src={movie.poster_path || movie.poster}
-                          alt={movie.title}
-                          className="search-result-poster"
-                          onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=50&q=80'; }}
-                        />
-                        <div className="search-result-details">
-                          <div className="search-result-title">{movie.title}</div>
-                          <div className="search-result-meta">
-                            {movie.release_date} • {movie.type === 'series' ? 'Série' : 'Filme'}
+                {showResults && (
+                  <div className="search-results-overlay">
+                    {isSearching ? (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                        Buscando no catálogo...
+                      </div>
+                    ) : searchResults.length > 0 ? (
+                      <>
+                        {searchResults.map((movie) => (
+                          <div
+                            key={movie.id}
+                            className="search-result-item"
+                            onClick={() => handleResultClick(movie)}
+                          >
+                            <img
+                              src={movie.poster_path || movie.poster}
+                              alt={movie.title}
+                              className="search-result-poster"
+                              onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=50&q=80'; }}
+                            />
+                            <div className="search-result-details">
+                              <div className="search-result-title">{movie.title}</div>
+                              <div className="search-result-meta">
+                                {movie.release_date} • {movie.type === 'series' ? 'Série' : 'Filme'}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        <div
+                          className="search-result-item"
+                          onClick={handleAddManualClick}
+                          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0, 224, 84, 0.04)' }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', color: 'var(--accent-orange)' }}>
+                            <Plus size={16} />
+                            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>
+                              Não achou? Cadastre "{searchQuery}" manualmente
+                            </span>
                           </div>
                         </div>
+                      </>
+                    ) : (
+                      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center' }}>
+                          Nenhum resultado encontrado.
+                        </div>
+                        <button
+                          onClick={handleAddManualClick}
+                          className="btn btn-secondary"
+                          style={{ width: '100%', padding: '0.5rem', fontSize: '0.8rem', justifyContent: 'center' }}
+                        >
+                          <Plus size={14} /> Cadastrar "{searchQuery}" manualmente
+                        </button>
                       </div>
-                    ))}
-                    
-                    {/* Option to add custom manual review */}
-                    <div
-                      className="search-result-item"
-                      onClick={handleAddManualClick}
-                      style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0, 224, 84, 0.04)' }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', color: 'var(--accent-neon-green)' }}>
-                        <Plus size={16} />
-                        <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>
-                          Não achou? Cadastre "{searchQuery}" manualmente
-                        </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <div style={{ width: '32px' }}></div>
+                <div className="header-logo-centered">
+                  CineBox
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <button 
+                    onClick={() => setIsSearchActive(true)}
+                    style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px' }}
+                    title="Buscar"
+                  >
+                    <Search size={22} />
+                  </button>
+                  {user && (
+                    <div className="header-mobile-profile" style={{ alignItems: 'center', gap: '0.75rem' }}>
+                      <img 
+                        src={user.avatar} 
+                        alt={user.name} 
+                        className={`avatar ${user.isGoogle ? 'google' : ''}`}
+                        style={{ width: '32px', height: '32px', margin: 0 }}
+                      />
+                    </div>
+                  )}
+                </div>
+              </>
+            )
+          ) : (
+            <>
+              {/* Desktop Header: search is always visible */}
+              <div className="search-container" ref={searchRef} style={{ position: 'relative' }}>
+                <Search size={18} style={{ color: 'var(--text-muted)' }} />
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Buscar filmes ou séries..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => searchQuery.trim().length > 1 && setShowResults(true)}
+                />
+                {showResults && (
+                  <div className="search-results-overlay">
+                    {isSearching ? (
+                      <div style={{ padding: '1rem', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                        Buscando no catálogo...
                       </div>
-                    </div>
-                  </>
-                ) : (
-                  <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center' }}>
-                      Nenhum resultado encontrado.
-                    </div>
-                    <button
-                      onClick={handleAddManualClick}
-                      className="btn btn-secondary"
-                      style={{ width: '100%', padding: '0.5rem', fontSize: '0.8rem', justifyContent: 'center' }}
+                    ) : searchResults.length > 0 ? (
+                      <>
+                        {searchResults.map((movie) => (
+                          <div
+                            key={movie.id}
+                            className="search-result-item"
+                            onClick={() => handleResultClick(movie)}
+                          >
+                            <img
+                              src={movie.poster_path || movie.poster}
+                              alt={movie.title}
+                              className="search-result-poster"
+                              onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=50&q=80'; }}
+                            />
+                            <div className="search-result-details">
+                              <div className="search-result-title">{movie.title}</div>
+                              <div className="search-result-meta">
+                                {movie.release_date} • {movie.type === 'series' ? 'Série' : 'Filme'}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        <div
+                          className="search-result-item"
+                          onClick={handleAddManualClick}
+                          style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0, 224, 84, 0.04)' }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', color: 'var(--accent-orange)' }}>
+                            <Plus size={16} />
+                            <span style={{ fontSize: '0.85rem', fontWeight: '600' }}>
+                              Não achou? Cadastre "{searchQuery}" manualmente
+                            </span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center' }}>
+                          Nenhum resultado encontrado.
+                        </div>
+                        <button
+                          onClick={handleAddManualClick}
+                          className="btn btn-secondary"
+                          style={{ width: '100%', padding: '0.5rem', fontSize: '0.8rem', justifyContent: 'center' }}
+                        >
+                          <Plus size={14} /> Cadastrar "{searchQuery}" manualmente
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="header-actions">
+                <span className="header-project-title" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  ProjetoBox • Diário de Filmes
+                </span>
+                {user && (
+                  <div className="header-mobile-profile" style={{ alignItems: 'center', gap: '0.75rem' }}>
+                    <img 
+                      src={user.avatar} 
+                      alt={user.name} 
+                      className={`avatar ${user.isGoogle ? 'google' : ''}`}
+                      style={{ width: '32px', height: '32px', margin: 0 }}
+                    />
+                    <button 
+                      onClick={logout} 
+                      style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0 }}
+                      title="Sair"
                     >
-                      <Plus size={14} /> Cadastrar "{searchQuery}" manualmente
+                      <LogOut size={18} />
                     </button>
                   </div>
                 )}
               </div>
-            )}
-          </div>
-
-          {/* Header Actions (Responsive) */}
-          <div className="header-actions">
-            <span className="header-project-title" style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              ProjetoBox • Diário de Filmes
-            </span>
-            {user && (
-              <div className="header-mobile-profile" style={{ alignItems: 'center', gap: '0.75rem' }}>
-                <img 
-                  src={user.avatar} 
-                  alt={user.name} 
-                  className={`avatar ${user.isGoogle ? 'google' : ''}`}
-                  style={{ width: '32px', height: '32px', margin: 0 }}
-                />
-                <button 
-                  onClick={logout} 
-                  style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: 0 }}
-                  title="Sair"
-                >
-                  <LogOut size={18} />
-                </button>
-              </div>
-            )}
-          </div>
+            </>
+          )}
         </header>
 
         {/* Page Content Injection */}

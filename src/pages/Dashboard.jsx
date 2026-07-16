@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { fetchHighlights, fetchMoviesByCategory } from '../services/tmdb';
 import MovieCarousel from '../components/MovieCarousel';
-import { Star, Play, Plus, Info, AlertTriangle, Key } from 'lucide-react';
+import MovieCard from '../components/MovieCard';
+import { Star, Play, Plus, AlertTriangle, ChevronRight } from 'lucide-react';
 
 const Dashboard = ({ onReviewMovie }) => {
   const { tmdbKey, user, watchlist, addToWatchlist, removeFromWatchlist } = useContext(AppContext);
@@ -13,6 +14,7 @@ const Dashboard = ({ onReviewMovie }) => {
   const [dramaMovies, setDramaMovies] = useState([]);
   const [scifiMovies, setScifiMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('recomended'); // 'recomended' | 'movies' | 'series' | 'infantil'
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -62,6 +64,74 @@ const Dashboard = ({ onReviewMovie }) => {
     }
   };
 
+  const continueWatchingList = [
+    {
+      id: 'cw-1',
+      title: 'Safe',
+      poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=500&q=80',
+      type: 'series',
+      release_date: '2018',
+      vote_average: 7.8,
+      progress: 65,
+      episodeInfo: 'S1 - E4'
+    },
+    {
+      id: 'cw-2',
+      title: 'Vis a vis',
+      poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=500&q=80',
+      type: 'series',
+      release_date: '2019',
+      vote_average: 8.2,
+      progress: 80,
+      episodeInfo: 'S4 - E7'
+    },
+    {
+      id: 'cw-3',
+      title: 'Vis a vis',
+      poster: 'https://images.unsplash.com/photo-1478720143022-10d000285563?auto=format&fit=crop&w=500&q=80',
+      type: 'series',
+      release_date: '2018',
+      vote_average: 8.2,
+      progress: 10,
+      episodeInfo: 'S3 - E4'
+    }
+  ];
+
+  const infantilMovies = [
+    { 
+      id: 'kid-1', 
+      title: 'Moana 2', 
+      poster_path: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=500&q=80', 
+      release_date: '2026-11-27', 
+      vote_average: 8.4,
+      type: 'movie'
+    },
+    { 
+      id: 'kid-2', 
+      title: 'Toy Story 5', 
+      poster_path: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=500&q=80', 
+      release_date: '2026-06-19', 
+      vote_average: 8.1,
+      type: 'movie'
+    },
+    { 
+      id: 'kid-3', 
+      title: 'Divertida Mente 2', 
+      poster_path: 'https://images.unsplash.com/photo-1478720143022-10d000285563?auto=format&fit=crop&w=500&q=80', 
+      release_date: '2024-06-14', 
+      vote_average: 8.6,
+      type: 'movie'
+    },
+    { 
+      id: 'kid-4', 
+      title: 'Meu Malvado Favorito 4', 
+      poster_path: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=500&q=80', 
+      release_date: '2024-07-03', 
+      vote_average: 7.9,
+      type: 'movie'
+    }
+  ];
+
   if (loading) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '1rem' }}>
@@ -69,7 +139,7 @@ const Dashboard = ({ onReviewMovie }) => {
           width: '50px',
           height: '50px',
           border: '3px solid rgba(255, 255, 255, 0.05)',
-          borderTopColor: 'var(--accent-neon-green)',
+          borderTopColor: 'var(--accent-orange)',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }}></div>
@@ -99,17 +169,45 @@ const Dashboard = ({ onReviewMovie }) => {
           margin: '0 2rem 1.5rem',
           fontSize: '0.85rem',
           gap: '1rem'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-neon-orange)' }}>
+        }} className="tmdb-warning-banner">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-orange)' }}>
             <AlertTriangle size={16} />
             <span>
-              <strong>Modo Demonstrativo Local:</strong> Você está vendo títulos de demonstração de 2026. Configure sua chave gratuita do TMDB nas Configurações para obter dados reais de milhões de títulos e pôsteres online!
+              <strong>Modo Demonstrativo:</strong> Configure sua chave do TMDB em Configurações para obter dados reais de milhões de títulos e pôsteres online!
             </span>
           </div>
         </div>
       )}
 
-      {/* Hero Banner (Destaques 2026) */}
+      {/* Top Tab Bar Navigation (YouCine Style) */}
+      <div className="top-tab-bar">
+        <button 
+          className={`top-tab-item ${activeTab === 'recomended' ? 'active' : ''}`}
+          onClick={() => setActiveTab('recomended')}
+        >
+          Recomendações
+        </button>
+        <button 
+          className={`top-tab-item ${activeTab === 'movies' ? 'active' : ''}`}
+          onClick={() => setActiveTab('movies')}
+        >
+          Filmes
+        </button>
+        <button 
+          className={`top-tab-item ${activeTab === 'series' ? 'active' : ''}`}
+          onClick={() => setActiveTab('series')}
+        >
+          Séries
+        </button>
+        <button 
+          className={`top-tab-item ${activeTab === 'infantil' ? 'active' : ''}`}
+          onClick={() => setActiveTab('infantil')}
+        >
+          Infantil
+        </button>
+      </div>
+
+      {/* Hero Banner (Destaques 2026) - Hidden on mobile */}
       {activeHighlight && (
         <div 
           className="hero-banner"
@@ -136,16 +234,16 @@ const Dashboard = ({ onReviewMovie }) => {
                 onClick={() => onReviewMovie(activeHighlight)}
                 className="btn btn-primary"
               >
-                <Play size={16} fill="var(--bg-primary)" /> Avaliar e Comentar
+                <Play size={16} fill="#000" /> Avaliar e Comentar
               </button>
               
               {user && (
                 <button 
                   onClick={() => handleWatchlistToggle(activeHighlight)}
                   className="btn btn-secondary"
-                  style={{ borderColor: inWatchlist(activeHighlight) ? 'var(--accent-neon-orange)' : 'var(--border-light)' }}
+                  style={{ borderColor: inWatchlist(activeHighlight) ? 'var(--accent-orange)' : 'var(--border-light)' }}
                 >
-                  <Plus size={16} style={{ color: inWatchlist(activeHighlight) ? 'var(--accent-neon-orange)' : '#fff' }} /> 
+                  <Plus size={16} style={{ color: inWatchlist(activeHighlight) ? 'var(--accent-orange)' : '#fff' }} /> 
                   {inWatchlist(activeHighlight) ? 'Remover da Lista' : 'Salvar na Lista'}
                 </button>
               )}
@@ -171,7 +269,7 @@ const Dashboard = ({ onReviewMovie }) => {
                     height: '12px',
                     borderRadius: '50%',
                     border: 'none',
-                    background: idx === activeHighlightIndex ? 'var(--accent-neon-green)' : 'rgba(255,255,255,0.3)',
+                    background: idx === activeHighlightIndex ? 'var(--accent-orange)' : 'rgba(255,255,255,0.3)',
                     cursor: 'pointer',
                     transition: 'background 0.25s'
                   }}
@@ -183,34 +281,85 @@ const Dashboard = ({ onReviewMovie }) => {
         </div>
       )}
 
-      {/* Movie Carousels */}
-      <section className="category-section">
-        <h2 className="category-title">
-          <span>Ação e Aventura</span>
-        </h2>
-        <MovieCarousel movies={actionMovies} onReviewClick={onReviewMovie} />
-      </section>
+      {/* CONTINUAR ASSISTINDO (Only under Recomendações tab) */}
+      {activeTab === 'recomended' && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Continuar Assistindo</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <div className="carousel-container">
+            <div className="carousel-track">
+              {continueWatchingList.map(movie => (
+                <MovieCard 
+                  key={movie.id} 
+                  movie={movie} 
+                  onReviewClick={onReviewMovie} 
+                  progress={movie.progress}
+                  episodeInfo={movie.episodeInfo}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-      <section className="category-section">
-        <h2 className="category-title">
-          <span>Suspense e Mistério</span>
-        </h2>
-        <MovieCarousel movies={suspenseMovies} onReviewClick={onReviewMovie} />
-      </section>
+      {/* CATEGORIES FILTERED BY TAB */}
+      
+      {/* 1. Aventura Sem Fim / Ação (Shown in Recomendações & Filmes) */}
+      {(activeTab === 'recomended' || activeTab === 'movies') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">{activeTab === 'movies' ? 'Ação' : 'Aventura Sem Fim'}</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={actionMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
 
-      <section className="category-section">
-        <h2 className="category-title">
-          <span>Drama</span>
-        </h2>
-        <MovieCarousel movies={dramaMovies} onReviewClick={onReviewMovie} />
-      </section>
+      {/* 2. Suspense e Mistério (Shown in Recomendações & Séries) */}
+      {(activeTab === 'recomended' || activeTab === 'series') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Suspense e Mistério</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={suspenseMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
 
-      <section className="category-section">
-        <h2 className="category-title">
-          <span>Ficção Científica e Fantasia</span>
-        </h2>
-        <MovieCarousel movies={scifiMovies} onReviewClick={onReviewMovie} />
-      </section>
+      {/* 3. Filmes em Alta / Drama (Shown in Recomendações & Filmes) */}
+      {(activeTab === 'recomended' || activeTab === 'movies') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Filmes em Alta</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={dramaMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
+
+      {/* 4. Ficção Científica / Séries (Shown in Recomendações & Séries) */}
+      {(activeTab === 'recomended' || activeTab === 'series') && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Ficção Científica e Fantasia</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={scifiMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
+
+      {/* 5. Infantil / Animação (Shown only in Infantil tab) */}
+      {activeTab === 'infantil' && (
+        <section className="category-section">
+          <div className="category-title-container">
+            <h2 className="category-title">Infantil e Animação</h2>
+            <ChevronRight size={22} className="category-chevron" />
+          </div>
+          <MovieCarousel movies={infantilMovies} onReviewClick={onReviewMovie} />
+        </section>
+      )}
 
     </div>
   );
