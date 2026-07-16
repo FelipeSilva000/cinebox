@@ -49,7 +49,7 @@ const Profile = ({ onReviewMovie }) => {
         <img 
           src={user.avatar} 
           alt={user.name} 
-          style={{ width: '100px', height: '100px', borderRadius: '50%', border: '4px solid var(--accent-neon-green)', objectFit: 'cover' }}
+          style={{ width: '100px', height: '100px', borderRadius: '50%', border: '4px solid var(--accent-orange)', objectFit: 'cover' }}
         />
         <div style={{ flex: 1, textAlign: 'left' }}>
           <h1 style={{ margin: '0 0 0.25rem 0', fontFamily: 'var(--font-heading)', fontSize: '2rem', fontWeight: 800 }}>

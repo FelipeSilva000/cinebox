@@ -1320,17 +1320,31 @@ body {
   }
 
   .filters-bar {
-    margin: 1rem !important;
+    margin: 1rem 0 !important;
     padding: 0.75rem !important;
     flex-direction: column !important;
     align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  .filters-group {
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    gap: 0.5rem !important;
+  }
+
+  .select-filter {
+    flex: 1 !important;
+    min-width: 110px !important;
+    padding: 0.4rem 0.5rem !important;
+    font-size: 0.8rem !important;
   }
 
   .profile-header {
     flex-direction: column !important;
     text-align: center !important;
     gap: 1rem !important;
-    margin: 1rem !important;
+    margin: 1rem 0 !important;
     padding: 1.25rem !important;
   }
 
@@ -1346,6 +1360,17 @@ body {
   .profile-header + div {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
-    padding: 0 1rem !important;
+    padding: 0 !important;
+  }
+
+  /* Ajuste de tamanho de títulos de páginas */
+  .main-content h1 {
+    font-size: 1.45rem !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .main-content h2 {
+    font-size: 1.15rem !important;
   }
 }
